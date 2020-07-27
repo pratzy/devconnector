@@ -3,3 +3,6 @@ env:
 
 dev:
 	npm i -D nodemon concurrently
+
+run:
+	npm run server
