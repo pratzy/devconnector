@@ -1,1 +1,1 @@
-web: npm i -D nodemon concurrently
+web: npm dev
