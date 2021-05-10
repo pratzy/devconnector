@@ -7,6 +7,10 @@ import Login from "./components/auth/Login";
 
 import "./App.css";
 
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:5000";
+
 const App = () => (
   <Router>
     <Fragment>
