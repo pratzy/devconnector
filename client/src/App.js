@@ -1,37 +1,46 @@
-import React, { Fragment } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Navbar from "./components/layout/Navbar";
-import Landing from "./components/layout/Landing";
-import Register from "./components/auth/Register";
-import Login from "./components/auth/Login";
-import Alert from "./components/layout/Alert";
-
+import axios from "axios";
+import React, { Fragment, useEffect } from "react";
 // Redux
 import { Provider } from "react-redux";
-import store from "./store";
-
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { loadUser } from "./actions/auth";
 import "./App.css";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Alert from "./components/layout/Alert";
+import Landing from "./components/layout/Landing";
+import Navbar from "./components/layout/Navbar";
+import store from "./store";
+import setAuthToken from "./utils/setAuthToken";
 
-import axios from "axios";
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 axios.defaults.baseURL = "http://localhost:5000";
 
-const App = () => (
-  <Provider store={store}>
-    <Router>
-      <Fragment>
-        <Navbar />
-        <Route exact path="/" component={Landing} />
-        <section className="container">
-          <Alert />
-          <Switch>
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-          </Switch>
-        </section>
-      </Fragment>
-    </Router>
-  </Provider>
-);
+const App = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <Router>
+        <Fragment>
+          <Navbar />
+          <Route exact path="/" component={Landing} />
+          <section className="container">
+            <Alert />
+            <Switch>
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+            </Switch>
+          </section>
+        </Fragment>
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;
